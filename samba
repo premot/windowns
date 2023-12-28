@@ -1,0 +1,41 @@
+To quickly set up an SMB share on a Linux system that works with Windows clients, follow these steps:
+
+1. Install Samba:
+   ```
+   emerge --ask net-fs/samba
+   ```
+
+2. Configure Samba:
+   Edit the Samba configuration file `/etc/samba/smb.conf` and add a share definition at the end of the file. Here's an example of a simple share:
+
+   ```
+   [sharename]
+   path = /path/to/shared/directory
+   browseable = yes
+   writable = yes
+   guest ok = yes
+   ```
+
+   Replace `sharename` with the name you want to give your share and `/path/to/shared/directory` with the actual path to the directory you want to share.
+
+3. Set the appropriate permissions on the shared directory:
+   ```
+   chmod -R 0755 /path/to/shared/directory
+   chown -R nobody:nogroup /path/to/shared/directory
+   ```
+
+4. Start the Samba service:
+   ```
+   /etc/init.d/samba start
+   ```
+
+5. Make sure the Samba service starts on boot:
+   ```
+   rc-update add samba default
+   ```
+
+6. If you have a firewall, allow Samba traffic through it. The ports that need to be open are 139 and 445 for TCP, and 137 and 138 for UDP.
+
+7. On the Windows client, access the share by opening File Explorer and entering `\\<linux-server-ip>\sharename` in the address bar.
+
+Replace `<linux-server-ip>` with the IP address of your Linux server and `sharename` with the name of your share.

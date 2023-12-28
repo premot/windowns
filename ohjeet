@@ -1,0 +1,19 @@
+```.bat
+@echo off
+for %%f in (*.wav) do ffmpeg -i "%%f" -b:a 128k -ar 44100 "%%~nf_new.mp3"
+pause
+```
+
+```powershell
+Get-ChildItem -Path . -Filter *.wav | ForEach-Object {
+  ffmpeg -i $_.FullName -codec:a libmp3lame -qscale:a 2 "$($_.DirectoryName)\$($_.BaseName).mp3"
+}
+```
+
+choco install git.install
+
+```git bash
+for file in *.wav; do
+  ffmpeg -i "$file" "${file%.wav}.mp3"
+done
+```
